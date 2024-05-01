@@ -7,7 +7,7 @@ You can either use the gui to control the stand or say the command to control th
 
 getgenv().Settings =  {
     --// !Main! \\--
-    ['USERS'] = {OWNER = 'Faisal_jss', STAND = 'Faisal_jss'}, -- Username Of Owner
+    ['USERS'] = {OWNER = 'Faisal_jss', STAND = 'faksasd'}, -- Username Of Owner
     ['Position'] = 'Back', -- Position Of Stand [Back / Left / Right]
     ['Attack'] = 'Heavy!', -- Heavy = Super Punch, Light = Spam Punch [Heavy! / Light!]
     ['CrewID'] = 10598253, -- Must Be In Group For It To Work 
