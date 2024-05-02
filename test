@@ -12,22 +12,22 @@ getgenv().Settings =  {
     ['Attack'] = 'Heavy!', -- Heavy = Super Punch, Light = Spam Punch [Heavy! / Light!]
     ['CrewID'] = 10598253, -- Must Be In Group For It To Work 
     ['StandMode'] = 'MIH', -- [Star Platinum / King Crimson / Golden Experience / TheWorld / MIH / Cmoon / KillerQueen / Whitesnake] put nothing in here if u dont want the sounds
-    ['FlyModeAnim'] = 'Glide', -- [Glide / Fly / Hover]
+    ['FlyModeAnim'] = 'Fly', -- [Glide / Fly / Hover]
 
     --// ! Misc ! \\--
-    ['ChatCmds'] = false, -- chat when a command is used 
+    ['ChatCmds'] = true, -- chat when a command is used 
     ['FPSCAP'] = false, -- [Off / Number] put a number in, this is so your main account gets the most fps (MAXED IS 60, SUGGEST 50 FPS ON STANDS)
     ['LowGraphics'] = false, -- Turns graphics down so your stand doesnt lag too much
     ['NoFace'] = true, -- For A Better Look On Your Stand
-    ['AutoMask'] = true, -- auto wears a mask
+    ['AutoMask'] = false, -- auto wears a mask
     ['AutoSize'] = false, -- auto changes your size to default da hood scale size
     ['NoLegs'] = false, -- makes your legs invisible (FE)
     ['TITAN'] = false, -- makes you titan (MUST BE FAT) (FE)
-    ['TeleportToOwner'] = false, -- makes you teleport to the owner
+    ['TeleportToOwner'] = true, -- makes you teleport to the owner
 
     --//    ! Sounds !     \\--
     --\\ MUST HAVE BOOMBOX //--
-    ['CustomSummonText'] = 'Made In Heaven!', -- enter your own summon text e.g "Summon!" (can effect stand gui if is changed)
+    ['CustomSummonText'] = 'Summon!', -- enter your own summon text e.g "Summon!" (can effect stand gui if is changed)
     ['Sounds'] = true, -- [On / Off] Sounds when you use some commands like Mimic! Evolve! etc
     ['SummonMusicID'] = 'Default', -- Enter A Sound ID Put [Default] If You Would Like The Default Sound
     ['SummonMusic'] = true, -- [On / Off]
@@ -721,73 +721,89 @@ Humanoid:FindFirstChild("HeadScale"):Destroy()
 	
 
 	-- Summon!
-game:GetService("Players").LocalPlayer.PlayerGui.Chat.Frame.ChatChannelParentFrame["Frame_MessageLogDisplay"].Scroller.ChildAdded:Connect(function(mychild)
-if mychild:IsA("Frame") then
-    wait(0.4)
-    if mychild.TextLabel.TextButton.Text == "[" .. game.Players[StandOwner].DisplayName .. "]:" then
-        if string.match(mychild.TextLabel.Text, CustomSummonText) then
-            
-			if SummonMusic == true and SummonMusicID == "Default" then
-			    StopAudio()
-			    wait(.1)
-				if StandMode == "Star Platinum" then
-					wait(.7)
-					play(8925061007, true, true)
-				elseif StandMode == "Golden Experience" then
-					wait(.6)
-					play(3378937315, true, true)
-				elseif StandMode == "King Crimson" then
-				    wait(.65)
-					play(5772862631, true, true)
-				elseif StandMode == "TheWorld" then
-				elseif StandMode == "MIH" then
-					wait(.7)
-					play(6742117826, true, true)
-				elseif StandMode == "Cmoon" then
-					wait(.7)
-					play(6770422084, true, true)
-				elseif StandMode == "KillerQueen" then
-				    wait(.7)
-					play(6846384546, true, true)
-				elseif StandMode == "Whitesnake" then
-				    wait(.67)
-				    play(6814259761, true, true)
-				end
-			elseif SummonMusic == true and not SummonMusicID == "Default" then
-				play(SummonMusicID, true, true)
-			end
-
-			if ChatCmds == true then
-				local A_1 = "/w " ..StandOwner.. "I'm Here, Master" local A_2 = "All" local Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest Event:FireServer(A_1, A_2) 
-			end
-
-			game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
-			game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):UnequipTools()
-
-
-			follow = true
-			noclip = true
-
-			oranear = false
-			jojopos = false
-			autostomp = false
-			stoppunchanim = true
-			stopbarrageanim = true
-			barragepos = false
-			stopmovehover = false
-			stophover = false
-			barragepunch = false
-			evolvefollow = false
-			aura = false
-			killnear = false
-			mimic = false
-			vanish = false
-			killed = false
-			bring = false
-			Block = false
-			mimicpunch = false
-			killtheplayer = false
-			hoveranim:Play()
+    game:GetService("Players").LocalPlayer.PlayerGui.Chat.Frame.ChatChannelParentFrame["Frame_MessageLogDisplay"].Scroller.ChildAdded:Connect(function(mychild)
+        if mychild:IsA("Frame") then
+            wait(0.4)
+            if mychild.TextLabel.TextButton.Text == "[" .. game.Players[StandOwner].DisplayName .. "]:" then
+                if string.match(mychild.TextLabel.Text, CustomSummonText) then
+                    -- Stop any current audio
+                    StopAudio()
+                    wait(0.1)
+    
+                    -- Play summoning music based on stand mode
+                    if SummonMusic == true then
+                        if SummonMusicID == "Default" then
+                            local musicId = nil
+                            if StandMode == "Star Platinum" then
+                                musicId = 8925061007
+                            elseif StandMode == "Golden Experience" then
+                                musicId = 3378937315
+                            elseif StandMode == "King Crimson" then
+                                musicId = 5772862631
+                            elseif StandMode == "MIH" then
+                                musicId = 6742117826
+                            elseif StandMode == "Cmoon" then
+                                musicId = 6770422084
+                            elseif StandMode == "KillerQueen" then
+                                musicId = 6846384546
+                            elseif StandMode == "Whitesnake" then
+                                musicId = 6814259761
+                            end
+                            if musicId then
+                                play(musicId, true, true)
+                                wait(0.7) -- Adjust wait time as needed
+                            end
+                        else
+                            -- Play custom summon music
+                            play(SummonMusicID, true, true)
+                        end
+                    end
+    
+                    -- Send chat message if ChatCmds is enabled
+                    if ChatCmds == true then
+                        local A_1 = "/w " .. StandOwner .. " I'm Here, Master"
+                        local A_2 = "All"
+                        local Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
+                        Event:FireServer(A_1, A_2)
+                    end
+    
+                    -- Teleport the stand to the local player's position
+                    Stand.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    
+                    -- Reset animation states
+                    stoppunchanim = true
+                    stopbarrageanim = true
+    
+                    -- Additional logic for summoning the stand
+                    follow = true
+                    noclip = true
+                    oranear = false
+                    jojopos = false
+                    autostomp = false
+                    barragepos = false
+                    stopmovehover = false
+                    stophover = false
+                    barragepunch = false
+                    evolvefollow = false
+                    aura = false
+                    killnear = false
+                    mimic = false
+                    vanish = false
+                    killed = false
+                    bring = false
+                    Block = false
+                    mimicpunch = false
+                    killtheplayer = false
+    
+                    hoveranim:Play() -- Assuming hoveranim is defined and controls the hover animation
+                    
+                    -- Set other control variables as needed
+                    -- ...
+                end
+            end
+        end
+    end)
+    
 	    elseif string.match(mychild.TextLabel.Text, "Mimic!") then
 
 			if ChatCmds == true then
@@ -2307,31 +2323,40 @@ end
                 ]]
 
 
-		elseif string.match(mychild.TextLabel.Text, "Stoppose!") then
-
-				Pos = false
-				Posing = false;
-				Pose:Stop();
-				game:GetService('Players').LocalPlayer.Character:FindFirstChild('HumanoidRootPart').Anchored = false;
-				game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true);
-
-			wait()
-			follow = true
-			wait()
-
-			stopmovehover = false
-			stophover = false
-			jojopos = false
-			StopAllAnims = false
-
-		elseif string.match(mychild.TextLabel.Text, "gun.shoot") then
-			game.Players.LocalPlayer.Character:FindFirstChild('[Revolver]'):Activate()
-		elseif string.match(mychild.TextLabel.Text, "gun.reload") then
-			game.ReplicatedStorage.MainEvent:FireServer("Reload")
-			   end
-        end
-	end
-	end)
+                game:GetService("Players").LocalPlayer.PlayerGui.Chat.Frame.ChatChannelParentFrame["Frame_MessageLogDisplay"].Scroller.ChildAdded:Connect(function(mychild)
+                    if mychild:IsA("Frame") then
+                        wait(0.4)
+                        if mychild.TextLabel.TextButton.Text == "[" .. game.Players[StandOwner].DisplayName .. "]:" then
+                            if string.match(mychild.TextLabel.Text, CustomSummonText) then
+                                -- Summon logic
+                                -- (Previous code)
+                
+                            elseif string.match(mychild.TextLabel.Text, "Stoppose!") then
+                                -- Stop pose logic
+                                Pos = false
+                                Posing = false
+                                Pose:Stop()
+                                game:GetService('Players').LocalPlayer.Character:FindFirstChild('HumanoidRootPart').Anchored = false
+                                game:GetService('StarterGui'):SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true)
+                                wait()
+                                follow = true
+                                wait()
+                                stopmovehover = false
+                                stophover = false
+                                jojopos = false
+                                StopAllAnims = false
+                
+                            elseif string.match(mychild.TextLabel.Text, "gun.shoot") then
+                                -- Gun shooting logic
+                                game.Players.LocalPlayer.Character:FindFirstChild('[Revolver]'):Activate()
+                            elseif string.match(mychild.TextLabel.Text, "gun.reload") then
+                                -- Gun reloading logic
+                                game.ReplicatedStorage.MainEvent:FireServer("Reload")
+                            end
+                        end
+                    end
+                end)
+                
 
 	game:GetService('RunService').Stepped:connect(function()
 		if mimic == true then
